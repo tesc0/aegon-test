@@ -6,4 +6,4 @@ include('../vendor/autoload.php');
 
 $languageBatchBo = new \Language\LanguageBatchBo();
 $languageBatchBo->generateLanguageFiles();
-$languageBatchBo->generateAppletLanguageXmlFiles();
+//$languageBatchBo->generateAppletLanguageXmlFiles();

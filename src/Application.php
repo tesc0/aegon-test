@@ -9,6 +9,8 @@ class Application
 
     public function __construct($application, $languages)
     {
+        echo "[APPLICATION: " . $application . "]\n";
+
         $this->application = $application;
         $this->languages = $languages;
 
@@ -18,7 +20,12 @@ class Application
     private function getLanguageFiles()
     {
         foreach ($this->languages as $language) {
-            if (Language::getFile($this->application, $language)) {
+
+            echo "[LANGUAGE: " . $language . "]\n";
+
+            $languageClass = new Language($this->application, $language);
+            $result = $languageClass->getFile();
+            if ($result) {
                 echo " OK\n";
             }
             else {

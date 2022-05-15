@@ -6,36 +6,41 @@ use Language\ApiCall;
 
 class Api 
 {
-    private $result;
+    private $response;
 
     public function execute($target, $mode, $getParameters, $postParameters)
     {
-        $this->result = ApiCall::call(
+        $this->response = ApiCall::call(
             $target,
             $mode, 
             $getParameters,
             $postParameters
         );
 		
-        $this->check4ErrorResult();
+        $this->check4Error();
     }
 
-    public function check4ErrorResult()
+    private function check4Error()
     {
         // Error during the api call.
-		if ($this->result === false || !isset($this->result['status'])) {
+		if ($this->response === false || !isset($this->response['status'])) {
 			throw new \Exception('Error during the api call');
 		}
 		// Wrong response.
-		if ($this->result['status'] != 'OK') {
+		if ($this->response['status'] != 'OK') {
 			throw new \Exception('Wrong response: '
-				. (!empty($this->result['error_type']) ? 'Type(' . $this->result['error_type'] . ') ' : '')
-				. (!empty($this->result['error_code']) ? 'Code(' . $this->result['error_code'] . ') ' : '')
-				. ((string)$this->result['data']));
+				. (!empty($this->response['error_type']) ? 'Type(' . $this->response['error_type'] . ') ' : '')
+				. (!empty($this->response['error_code']) ? 'Code(' . $this->response['error_code'] . ') ' : '')
+				. ((string)$this->response['data']));
 		}
 		// Wrong content.
-		if ($this->result['data'] === false) {
+		if ($this->response['data'] === false) {
 			throw new \Exception('Wrong content!');
 		}
+    }
+
+    public function getResponse()
+    {
+        return $this->response;
     }
 }
